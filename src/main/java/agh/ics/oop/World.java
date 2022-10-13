@@ -9,7 +9,7 @@ class World {
                 case "b" -> Direction.BACKWARD;
                 case "r" -> Direction.RIGHT;
                 case "l" -> Direction.LEFT;
-                default -> Direction.FORWARD;
+                default -> null;
             };
         }
         return directions;
@@ -22,15 +22,16 @@ class World {
     }
 
     private static void run(Direction[] directions) {
-        System.out.println("Animal is moving foward!");
         for(Direction dir : directions) {
-            String message = switch (dir) {
-                case FORWARD -> "Zwierzak idzie do przodu";
-                case BACKWARD -> "Zwierzak idzie do tyłu";
-                case RIGHT -> "Zwierzak skręca w prawo";
-                case LEFT -> "Zwierzak skręca w lewo";
-            };
-            System.out.println(message);
+            if (dir != null) {
+                String message = switch (dir) {
+                    case FORWARD -> "Zwierzak idzie do przodu";
+                    case BACKWARD -> "Zwierzak idzie do tyłu";
+                    case RIGHT -> "Zwierzak skręca w prawo";
+                    case LEFT -> "Zwierzak skręca w lewo";
+                };
+                System.out.println(message);
+            }
         }
         System.out.println("Stop");
     }
