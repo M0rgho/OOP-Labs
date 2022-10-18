@@ -17,10 +17,10 @@ public class MapDirectionTest {
         MapDirection[] directions = MapDirection.values();
         for (MapDirection dir : directions) {
             MapDirection correctDirection = switch (dir) {
-                case NORTH -> MapDirection.WEST;
-                case EAST -> MapDirection.NORTH;
-                case SOUTH -> MapDirection.EAST;
-                case WEST -> MapDirection.SOUTH;
+                case NORTH -> MapDirection.EAST;
+                case EAST -> MapDirection.SOUTH;
+                case SOUTH -> MapDirection.WEST;
+                case WEST -> MapDirection.NORTH;
             };
             assert MapDirection.next(dir) == correctDirection;
         }
@@ -31,10 +31,11 @@ public class MapDirectionTest {
         MapDirection[] directions = MapDirection.values();
         for (MapDirection dir : directions) {
             MapDirection correctDirection = switch (dir) {
-                case NORTH -> MapDirection.EAST;
-                case EAST -> MapDirection.SOUTH;
-                case SOUTH -> MapDirection.WEST;
-                case WEST -> MapDirection.NORTH;
+
+                case NORTH -> MapDirection.WEST;
+                case EAST -> MapDirection.NORTH;
+                case SOUTH -> MapDirection.EAST;
+                case WEST -> MapDirection.SOUTH;
             };
             assert MapDirection.previous(dir) == correctDirection;
         }

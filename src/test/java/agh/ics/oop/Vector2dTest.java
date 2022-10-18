@@ -82,10 +82,9 @@ public class Vector2dTest {
 
     @Test
     void opposite() {
-        assertEquals((new Vector2d(5, 3)).oppsite(), new Vector2d(-5, -3));
-        assertEquals((new Vector2d(0, -12)).oppsite(), new Vector2d(0, 12));
-        assertEquals((new Vector2d(15, -3)).oppsite(), new Vector2d(-15, 3));
-
+        assertEquals((new Vector2d(5, 3)).opposite(), new Vector2d(-5, -3));
+        assertEquals((new Vector2d(0, -12)).opposite(), new Vector2d(0, 12));
+        assertEquals((new Vector2d(15, -3)).opposite(), new Vector2d(-15, 3));
     }
 
 }

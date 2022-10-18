@@ -1,7 +1,5 @@
 package agh.ics.oop;
 
-import javax.xml.stream.FactoryConfigurationError;
-
 class Vector2d {
     final public int x;
     final public int y;
@@ -40,7 +38,7 @@ class Vector2d {
         return new Vector2d(Math.min(this.x, other.x), Math.min(this.y, other.y));
     }
 
-    Vector2d oppsite() {
+    Vector2d opposite() {
         return new Vector2d(-this.x, -this.y);
     }
 
@@ -55,40 +53,13 @@ class Vector2d {
 }
 
 class World {
-    private static Direction[] processDirections(String[] args) {
-        Direction[] directions = new Direction[args.length];
-        for(int i = 0; i < args.length; ++i) {
-            directions[i] = switch (args[i]) {
-                case "f" -> Direction.FORWARD;
-                case "b" -> Direction.BACKWARD;
-                case "r" -> Direction.RIGHT;
-                case "l" -> Direction.LEFT;
-                default -> null;
-            };
-        }
-        return directions;
-    }
-
     public static void main(String[] args) {
-        Vector2d position1 = new Vector2d(1,2);
-        System.out.println(position1);
-        Vector2d position2 = new Vector2d(-2,1);
-        System.out.println(position2);
-        System.out.println(position1.add(position2));
+        Animal animal = new Animal();
+        MoveDirection[] moves = OptionsParser.parse(args);
+        for(MoveDirection moveDirection : moves) {
+            animal.move(moveDirection);
+        }
+        System.out.println(animal);
     }
 
-//    private static void run(Direction[] directions) {
-//        for(Direction dir : directions) {
-//            if (dir != null) {
-//                String message = switch (dir) {
-//                    case FORWARD -> "Zwierzak idzie do przodu";
-//                    case BACKWARD -> "Zwierzak idzie do tyłu";
-//                    case RIGHT -> "Zwierzak skręca w prawo";
-//                    case LEFT -> "Zwierzak skręca w lewo";
-//                };
-//                System.out.println(message);
-//            }
-//        }
-//        System.out.println("Stop");
-//    }
 }

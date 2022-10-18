@@ -1,12 +1,5 @@
 package agh.ics.oop;
 
-enum Direction {
-    FORWARD,
-    BACKWARD,
-    RIGHT,
-    LEFT
-}
-
 enum MoveDirection {
     FORWARD,
     BACKWARD,
@@ -31,6 +24,15 @@ enum MapDirection {
 
     public static MapDirection next(final MapDirection direction) {
         return switch (direction) {
+            case NORTH -> EAST;
+            case EAST -> SOUTH;
+            case SOUTH -> WEST;
+            case WEST -> NORTH;
+        };
+    }
+
+    public static MapDirection previous(final MapDirection direction) {
+        return switch (direction) {
             case NORTH -> WEST;
             case EAST -> NORTH;
             case SOUTH -> EAST;
@@ -38,14 +40,6 @@ enum MapDirection {
         };
     }
 
-    public static MapDirection previous(final MapDirection direction) {
-        return switch (direction) {
-            case NORTH -> EAST;
-            case EAST -> SOUTH;
-            case SOUTH -> WEST;
-            case WEST -> NORTH;
-        };
-    }
     public static Vector2d toUnitVector(final MapDirection direction) {
         return switch (direction) {
             case NORTH -> new Vector2d(0, 1);
