@@ -11,6 +11,7 @@ class Vector2d {
         this.y = y;
     }
 
+    @Override
     public String toString() {
         return String.format("(%d,%d)", this.x, this.y);
     }
@@ -43,14 +44,13 @@ class Vector2d {
         return new Vector2d(-this.x, -this.y);
     }
 
+    @Override
     public boolean equals(Object other) {
         if (!(other instanceof Vector2d)) {
             return false;
         }
-        return this.x == other.x && this.y == other.y;
+        return this.x == ((Vector2d) other).x && this.y == ((Vector2d) other).y;
     }
-
-
 
 }
 
@@ -70,23 +70,25 @@ class World {
     }
 
     public static void main(String[] args) {
-        System.out.println("system wystartował");
-        run(processDirections(args));
-        System.out.println("system zakończył działanie");
+        Vector2d position1 = new Vector2d(1,2);
+        System.out.println(position1);
+        Vector2d position2 = new Vector2d(-2,1);
+        System.out.println(position2);
+        System.out.println(position1.add(position2));
     }
 
-    private static void run(Direction[] directions) {
-        for(Direction dir : directions) {
-            if (dir != null) {
-                String message = switch (dir) {
-                    case FORWARD -> "Zwierzak idzie do przodu";
-                    case BACKWARD -> "Zwierzak idzie do tyłu";
-                    case RIGHT -> "Zwierzak skręca w prawo";
-                    case LEFT -> "Zwierzak skręca w lewo";
-                };
-                System.out.println(message);
-            }
-        }
-        System.out.println("Stop");
-    }
+//    private static void run(Direction[] directions) {
+//        for(Direction dir : directions) {
+//            if (dir != null) {
+//                String message = switch (dir) {
+//                    case FORWARD -> "Zwierzak idzie do przodu";
+//                    case BACKWARD -> "Zwierzak idzie do tyłu";
+//                    case RIGHT -> "Zwierzak skręca w prawo";
+//                    case LEFT -> "Zwierzak skręca w lewo";
+//                };
+//                System.out.println(message);
+//            }
+//        }
+//        System.out.println("Stop");
+//    }
 }
