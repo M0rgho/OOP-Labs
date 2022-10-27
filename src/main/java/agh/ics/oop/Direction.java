@@ -7,20 +7,21 @@ enum MoveDirection {
     LEFT
 }
 
+
 enum MapDirection {
     NORTH,
     SOUTH,
     EAST,
     WEST;
 
-    public String toString(){
-        return switch (this) {
-            case NORTH -> "Północ";
-            case SOUTH -> "Południe";
-            case WEST -> "Zachód";
-            case EAST -> "Wschód";
-        };
-    }
+//    public String toString(){
+//        return switch (this) {
+//            case NORTH -> "Północ";
+//            case SOUTH -> "Południe";
+//            case WEST -> "Zachód";
+//            case EAST -> "Wschód";
+//        };
+//    }
 
     public static MapDirection next(final MapDirection direction) {
         return switch (direction) {

@@ -1,5 +1,7 @@
 package agh.ics.oop;
 
+import java.util.Arrays;
+
 class Vector2d {
     final public int x;
     final public int y;
@@ -53,7 +55,10 @@ class Vector2d {
 }
 
 class World {
+
+
     public static void main(String[] args) {
+
         Animal animal = new Animal();
         MoveDirection[] moves = OptionsParser.parse(args);
         for(MoveDirection moveDirection : moves) {

@@ -1,6 +1,8 @@
 package agh.ics.oop;
 
 public class Animal {
+
+    static boolean[][] isAnimalThere = new boolean[5][5];
     private Vector2d position = new Vector2d(2, 2);
     private MapDirection direction = MapDirection.NORTH;
 
@@ -9,7 +11,7 @@ public class Animal {
 
     @Override
     public String toString() {
-        return String.format("Position: (%d, %d) Orientacja: %s:", this.position.x, this.position.y, this.direction);
+        return String.format("Position: (%d, %d) Orientation: %s", this.position.x, this.position.y, this.direction);
     }
 
     public boolean isAt(final Vector2d position) {
@@ -18,6 +20,13 @@ public class Animal {
 
     boolean areCoordinatesValid(final Vector2d coords) {
         return boundingBoxMin.precedes(coords) && boundingBoxMax.follow(coords);
+    }
+
+    public MapDirection getDirection() {
+        return direction;
+    }
+    public Vector2d getPosition() {
+        return position;
     }
 
 
