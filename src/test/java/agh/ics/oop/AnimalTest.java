@@ -7,22 +7,15 @@ import org.junit.jupiter.api.*;
 import java.io.*;
 
 public class AnimalTest {
-
-
-
     Animal animal;
+    RectangularMap map = new RectangularMap(10, 10);
 
     @BeforeEach
     void animalInstantiationTest() {
-        animal = new Animal();
+        animal = new Animal(map);
         assertNotNull(animal);
         assert animal.isAt(new Vector2d(2, 2));
         assert animal.getDirection() == MapDirection.NORTH;
-    }
-
-    @AfterEach
-    void assertValidPosition() {
-        assert animal.areCoordinatesValid(animal.getPosition());
     }
 
     @Test
@@ -64,6 +57,7 @@ public class AnimalTest {
         outContent.reset();
         World.main(new String[]{"forward", "right", "backward", "left"});
         assertEquals("Position: (1, 3) Orientation: NORTH\r\n", outContent.toString());
+
 
     }
 //    static MoveDirection oppositeMove(MoveDirection move) {
