@@ -21,7 +21,7 @@ public class RectangularMap implements IWorldMap {
 
     @Override
     public boolean canMoveTo(Vector2d position) {
-        return position.follow(minBoundBox) && position.precedes(maxBoundBox);
+        return position.follow(minBoundBox) && position.precedes(maxBoundBox) && !isOccupied(position);
     }
 
     @Override
