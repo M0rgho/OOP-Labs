@@ -1,39 +1,30 @@
 package agh.ics.oop;
 
-import java.awt.desktop.PreferencesEvent;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public abstract class AbstractWorldMap implements IWorldMap{
-    ArrayList<IMapElement> elementsList = new ArrayList<>();
+public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
+    Map<Vector2d, IMapElement> elementsSet = new HashMap<>();
     MapVisualizer visualizer = new MapVisualizer(this);
 
 
     @Override
     public boolean place(Animal animal) {
-        if(!canMoveTo(animal.getPosition()))
+        Vector2d animalPosition = animal.getPosition();
+        if (!canMoveTo(animalPosition))
             return false;
-        elementsList.add(animal);
+        elementsSet.put(animalPosition, animal);
         return true;
     }
 
     @Override
     public boolean isOccupied(Vector2d position) {
-        for(IMapElement element: elementsList) {
-            if (position.equals(element.getPosition())) {
-                return true;
-            }
-        }
-        return false;
+        return elementsSet.containsKey(position);
     }
 
     @Override
     public Object objectAt(Vector2d position) {
-        for(IMapElement element: elementsList) {
-            if (position.equals(element.getPosition())) {
-                return element;
-            }
-        }
-        return null;
+        return elementsSet.getOrDefault(position, null);
     }
 
     abstract String generateVisualisation();
@@ -41,5 +32,12 @@ public abstract class AbstractWorldMap implements IWorldMap{
     @Override
     public String toString() {
         return generateVisualisation();
+    }
+
+    @Override
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        IMapElement element = elementsSet.get(oldPosition);
+        elementsSet.remove(oldPosition);
+        elementsSet.put(newPosition, element);
     }
 }

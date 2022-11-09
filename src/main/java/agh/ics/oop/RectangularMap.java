@@ -1,6 +1,5 @@
 package agh.ics.oop;
 
-import java.util.ArrayList;
 
 public class RectangularMap extends AbstractWorldMap {
 
@@ -25,5 +24,12 @@ public class RectangularMap extends AbstractWorldMap {
     @Override
     String generateVisualisation() {
         return visualizer.draw(minBoundBox, maxBoundBox);
+    }
+
+    @Override
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        IMapElement element = elementsSet.get(oldPosition);
+        elementsSet.remove(oldPosition);
+        elementsSet.put(newPosition, element);
     }
 }
