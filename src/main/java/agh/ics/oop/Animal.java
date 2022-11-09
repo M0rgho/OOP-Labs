@@ -25,7 +25,7 @@ public class Animal {
     }
 
     public boolean isAt(final Vector2d position) {
-        return position.x == this.position.x && position.y == this.position.y;
+        return this.position.equals(position);
     }
 
     public MapDirection getDirection() {

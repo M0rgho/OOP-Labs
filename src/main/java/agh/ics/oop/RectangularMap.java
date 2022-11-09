@@ -18,6 +18,11 @@ public class RectangularMap implements IWorldMap {
         maxBoundBox = new Vector2d(width, height);
         animalList = new ArrayList<>();
     }
+    int curIndex = -1;
+    public Animal getNextAnimal() {
+        curIndex = (curIndex + 1) % animalList.size();
+        return animalList.get(curIndex);
+    }
 
     @Override
     public boolean canMoveTo(Vector2d position) {
@@ -52,6 +57,6 @@ public class RectangularMap implements IWorldMap {
                 return animal;
             }
         }
-        return false;
+        return null;
     }
 }
