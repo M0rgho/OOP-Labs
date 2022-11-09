@@ -1,7 +1,5 @@
 package agh.ics.oop;
 
-import javax.swing.text.Position;
-import java.util.Arrays;
 import java.util.Random;
 
 public class GrassField extends AbstractWorldMap{
@@ -33,7 +31,7 @@ public class GrassField extends AbstractWorldMap{
     void generateGrass() {
         for(int i = 0; i < grassCount; ++i) {
             Vector2d newPosition = getRandomEmptyField();
-            elementsList.add(new Grass(newPosition));
+            elementsSet.put(newPosition, new Grass(newPosition));
         }
     }
 
@@ -41,7 +39,7 @@ public class GrassField extends AbstractWorldMap{
     public boolean canMoveTo(Vector2d position) {
         Object element = objectAt(position);
         if (element instanceof Grass) {
-            ((Grass) element).position = getRandomEmptyField();
+            positionChanged(((Grass) element).position, getRandomEmptyField());
         }
         return element == null || element instanceof Grass;
     }
@@ -50,11 +48,11 @@ public class GrassField extends AbstractWorldMap{
     String generateVisualisation() {
         Vector2d lowerLeft = new Vector2d(grassUpperBound, grassUpperBound);
         Vector2d upperRight = new Vector2d(0, 0);
-        for(IMapElement element : elementsList) {
-            Vector2d position = element.getPosition();
+        for(Vector2d position : elementsSet.keySet()) {
             lowerLeft = lowerLeft.lowerLeft(position);
             upperRight = upperRight.upperRight(position);
         }
         return visualizer.draw(lowerLeft, upperRight);
     }
+
 }

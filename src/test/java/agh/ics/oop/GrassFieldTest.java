@@ -12,8 +12,7 @@ public class GrassFieldTest {
     void grassGenerationTest(final int n) {
         GrassField grassField = new GrassField(n);
         assert grassField.grassCount == n;
-        assert grassField.elementsList.size() == n;
-        for(IMapElement element : grassField.elementsList) {
+        for(IMapElement element : grassField.elementsSet.values()) {
             assert element instanceof Grass;
             assert element.getPosition().precedes(new Vector2d(grassField.grassUpperBound, grassField.grassUpperBound));
         }

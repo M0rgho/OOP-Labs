@@ -4,7 +4,7 @@ class World {
 
 
     public static void main(String[] args) {
-        int grassCount = 2;
+        int grassCount = 10;
 
         MoveDirection[] directions = OptionsParser.parse(args);
         AbstractWorldMap map = new GrassField(grassCount);

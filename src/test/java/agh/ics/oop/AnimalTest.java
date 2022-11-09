@@ -7,7 +7,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
-import java.util.Random;
 
 
 
@@ -16,6 +15,11 @@ public class AnimalTest {
     Vector2d startingPosition = new Vector2d(50, 50);
     // Test map that always allows animal movement;
     AbstractWorldMap map = new AbstractWorldMap() {
+        @Override
+        public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+
+        }
+
         @Override
         String generateVisualisation() {
             return "";
@@ -46,7 +50,7 @@ public class AnimalTest {
 
     @ParameterizedTest
     @ValueSource(ints = {1, 10, 20, 100})
-    @DisplayName("Foward movement test")
+    @DisplayName("Forward movement test")
     void forwardTest(final int n){
         for(int i = 0; i < n; ++i) {
             animal.move(MoveDirection.FORWARD);
@@ -73,9 +77,7 @@ public class AnimalTest {
     @DisplayName("Test random walk and a its reverse")
     void randomMovementTest(final int n) {
         MovesGenerator generator = new MovesGenerator(1000);
-        System.out.println(animal.getPosition());
         MoveDirection[] moves = generator.generateMoves(n);
-        System.out.println(Arrays.toString(moves));
         for(MoveDirection move : moves) {
             animal.move(move);
         }
