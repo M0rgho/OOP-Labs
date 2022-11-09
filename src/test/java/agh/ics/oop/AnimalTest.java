@@ -5,61 +5,84 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.util.Arrays;
 import java.util.Random;
 
 
 
 public class AnimalTest {
     Animal animal;
-    RectangularMap map = new RectangularMap(100, 100);
+    Vector2d startingPosition = new Vector2d(50, 50);
+    // Test map that always allows animal movement;
+    AbstractWorldMap map = new AbstractWorldMap() {
+        @Override
+        String generateVisualisation() {
+            return "";
+        }
+        @Override
+        public boolean canMoveTo(Vector2d position) {
+            return true;
+        }
+    };
 
     @BeforeEach
     void animalInstantiationTest() {
-        animal = new Animal(map, new Vector2d(50, 50));
+        animal = new Animal(map, startingPosition);
         assertNotNull(animal);
-        assert animal.isAt(new Vector2d(50, 50));
+        assert animal.isAt(startingPosition);
         assert animal.getDirection() == MapDirection.NORTH;
     }
 
     @Test
-    @DisplayName("Manual movement and turning test")
-    void RotationTest(){
-        for(int i = 0; i < 4; ++i) {
+    @DisplayName("Turning test")
+    void rotationTest(){
+        for(int i = 0; i < 40; ++i) {
             animal.move(MoveDirection.LEFT);
         }
         assert animal.getDirection() == MapDirection.NORTH;
+        assert animal.getPosition() == startingPosition;
     }
 
-    static MoveDirection oppositeMove(MoveDirection move) {
-        return switch (move) {
-            case FORWARD -> MoveDirection.BACKWARD;
-            case RIGHT -> MoveDirection.LEFT;
-            case LEFT -> MoveDirection.RIGHT;
-            case BACKWARD -> MoveDirection.FORWARD;
-        };
-    }
-    static MoveDirection[] generateMoves(final int n) {
-        Random rand = new Random(1000);
-        MoveDirection[] allMoves = MoveDirection.values();
-        MoveDirection[] generatedMoves = new MoveDirection[n];
-        for (int i = 0; i < n; ++i) {
-            generatedMoves[i] = allMoves[rand.nextInt(0, MoveDirection.values().length)];
+    @ParameterizedTest
+    @ValueSource(ints = {1, 10, 20, 100})
+    @DisplayName("Foward movement test")
+    void forwardTest(final int n){
+        for(int i = 0; i < n; ++i) {
+            animal.move(MoveDirection.FORWARD);
         }
-        return generatedMoves;
+        assert animal.getDirection() == MapDirection.NORTH;
+        assert animal.getPosition().equals(new Vector2d(startingPosition.x, startingPosition.y + n));
     }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1, 10, 20, 100})
+    @DisplayName("Backward movement test")
+    void backwardTest(final int n){
+        for(int i = 0; i < n; ++i) {
+            animal.move(MoveDirection.BACKWARD);
+        }
+        assert animal.getDirection() == MapDirection.NORTH;
+        assert animal.getPosition().equals(new Vector2d(startingPosition.x, startingPosition.y - n));
+    }
+
+
 
     @ParameterizedTest
     @ValueSource(ints = {5, 10, 20, 50})
     @DisplayName("Test random walk and a its reverse")
     void randomMovementTest(final int n) {
-        MoveDirection[] moves = generateMoves(n);
+        MovesGenerator generator = new MovesGenerator(1000);
+        System.out.println(animal.getPosition());
+        MoveDirection[] moves = generator.generateMoves(n);
+        System.out.println(Arrays.toString(moves));
         for(MoveDirection move : moves) {
             animal.move(move);
         }
         for(int i = moves.length - 1; i >= 0; --i) {
-            animal.move(oppositeMove(moves[i]));
+            animal.move(MovesGenerator.oppositeMove(moves[i]));
         }
-        assert animal.isAt(new Vector2d(50,  50));
+        assert animal.isAt(startingPosition);
         assert animal.getDirection() == MapDirection.NORTH;
     }
 }
