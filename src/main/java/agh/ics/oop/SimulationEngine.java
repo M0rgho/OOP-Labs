@@ -1,7 +1,7 @@
 package agh.ics.oop;
 
 public class SimulationEngine implements IEngine {
-    final Animal[] animals;
+    private final Animal[] animals;
     private final MoveDirection[] directions;
     private final AbstractWorldMap map;
     private final Vector2d[] positions;
@@ -19,7 +19,8 @@ public class SimulationEngine implements IEngine {
             Animal animal = new Animal(map, positions[i]);
             animals[i] = animal;
             animal.addObserver(map);
-            map.place(animal);
+            if(!map.place(animal))
+                throw new IllegalArgumentException("Can't place the animal at" + positions[i]);
         }
         for (int i = 0; i < directions.length; ++i) {
             animals[i % animals.length].move(directions[i]);

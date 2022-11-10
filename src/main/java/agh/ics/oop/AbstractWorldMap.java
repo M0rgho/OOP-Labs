@@ -19,7 +19,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
 
     @Override
     public boolean isOccupied(Vector2d position) {
-        return elementsSet.containsKey(position);
+        return objectAt(position) == null;
     }
 
     @Override

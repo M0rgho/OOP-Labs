@@ -3,25 +3,41 @@ package agh.ics.oop;
 import org.junit.jupiter.api.Test;
 
 import static agh.ics.oop.MoveDirection.*;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class OptionParserTest {
     @Test
     public void testParsingInput() {
-        assertAll("parsing strings", () -> {
+            assertAll("parsing strings", () -> {
             assertAll("valid strings", () -> {
-                assertArrayEquals(new MoveDirection[]{FORWARD, FORWARD},OptionsParser.parse(new String[]{"f", "R", "forward", "Forward", "FORWARD"}));
-                assertArrayEquals(new MoveDirection[]{RIGHT, RIGHT},OptionsParser.parse(new String[]{"r", "R", "right", "Right", "RIGHT"}));
-                assertArrayEquals(new MoveDirection[]{BACKWARD, BACKWARD},OptionsParser.parse(new String[]{"b", "B", "backward", "Backward", "BACKWARD"}));
-                assertArrayEquals(new MoveDirection[]{LEFT, LEFT},OptionsParser.parse(new String[]{"l", "L", "left", "Left", "LEFT"}));
-                assertArrayEquals(new MoveDirection[]{FORWARD, BACKWARD}, OptionsParser.parse(new String[]{"f", "b"}));
+                String[] forwardStrings = new String[] {"f", "forward"};
+                String[] rightStrings = new String[] {"r", "right"};
+                String[] backwardStrings = new String[] {"b", "backward"};
+                String[] leftStrings = new String[] {"l", "left"};
+
+                for (String f : forwardStrings)
+                    assertArrayEquals(new MoveDirection[]{FORWARD}, OptionsParser.parse(new String[]{f}));
+                for (String f : rightStrings)
+                    assertArrayEquals(new MoveDirection[]{RIGHT}, OptionsParser.parse(new String[]{f}));
+                for (String f : backwardStrings)
+                    assertArrayEquals(new MoveDirection[]{BACKWARD}, OptionsParser.parse(new String[]{f}));
+                for (String f : leftStrings)
+                    assertArrayEquals(new MoveDirection[]{LEFT}, OptionsParser.parse(new String[]{f}));
             });
             assertAll("invalid strings", () -> {
-                assertArrayEquals(new MoveDirection[]{}, OptionsParser.parse(new String[]{""}));
-                assertArrayEquals(new MoveDirection[]{}, OptionsParser.parse(new String[]{"gdf", "f ", "b ", "l ", "r ", " ", "\\", "? ", "-"}));
-                assertArrayEquals(new MoveDirection[]{}, OptionsParser.parse(new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}));
-            });
+                String[] invalidStrings = new String[]{"gdf", "f ", "b ", "l ", "r ", " ", "\\", "? ", "-", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "true"};
+                String[] InvalidCaseSensitive = new String[] {
+                        "F", "forWarD", "Forward", "FORWARD",
+                        "R", "RiGht", "Right", "RIGHT",
+                        "B", "Backward", "bacKwaRd", "BACKWARD",
+                        "L", "Left", "leFT", "LEFT"};
+                for (String badStr : invalidStrings) {
+                    assertThrows(IllegalArgumentException.class, () -> OptionsParser.parse(new String[]{badStr}));
+                }
+                for (String badStr : InvalidCaseSensitive) {
+                    assertThrows(IllegalArgumentException.class, () -> OptionsParser.parse(new String[]{badStr}));
+                }
+                });
         });
     }
 }
