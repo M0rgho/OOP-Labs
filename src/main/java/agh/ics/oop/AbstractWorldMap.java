@@ -1,5 +1,6 @@
 package agh.ics.oop;
 
+import javax.swing.plaf.multi.MultiOptionPaneUI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     public boolean place(Animal animal) {
         Vector2d animalPosition = animal.getPosition();
         if (!canMoveTo(animalPosition))
-            return false;
+            throw new IllegalArgumentException("Can't place the animal at" + animalPosition);
         elementsSet.put(animalPosition, animal);
         return true;
     }

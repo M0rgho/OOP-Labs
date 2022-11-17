@@ -2,11 +2,11 @@ package agh.ics.oop;
 
 import java.util.Objects;
 
-class Vector2d {
-    int x;
-    int y;
+public class Vector2d {
+    public int x;
+    public int y;
 
-    Vector2d(int x, int y) {
+    public Vector2d(int x, int y) {
         this.x = x;
         this.y = y;
     }

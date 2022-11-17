@@ -1,23 +1,15 @@
 package agh.ics.oop;
 
+import agh.ics.oop.gui.App;
+import javafx.application.Application;
+
 class World {
 
 
     public static void main(String[] args) {
-        int grassCount = 10;
-        try {
-            MoveDirection[] directions = OptionsParser.parse(args);
-            AbstractWorldMap map = new GrassField(grassCount);
-            Vector2d[] positions = { new Vector2d(2,2), new Vector2d(2,2)};
 
-            IEngine engine = new SimulationEngine(directions, map, positions);
+        Application.launch(App.class, args);
 
-            engine.run();
-
-            System.out.println(map);
-        } catch (IllegalArgumentException e) {
-            System.err.println(e.getMessage());
-        }
 
 
     }
