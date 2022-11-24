@@ -22,7 +22,7 @@ public class App extends Application implements IPositionChangeObserver{
     private double appHeight = 600;
     private final double cellSize = 40;
 
-    private final int moveDelay = 3100; // milliseconds
+    private final int moveDelay = 300; // milliseconds
 
     private GridGui gridGui;
     private SimulationEngine engine;

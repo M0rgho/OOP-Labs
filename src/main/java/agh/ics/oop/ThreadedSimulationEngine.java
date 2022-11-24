@@ -15,6 +15,13 @@ public class ThreadedSimulationEngine extends SimulationEngine implements Runnab
 
     @Override
     public void run() {
-        super.run();
+        for (int i = 0; i < super.directions.length; ++i) {
+            animals.get(i % animals.size()).move(directions[i]);
+            try {
+                Thread.sleep(moveDelay);
+            } catch (InterruptedException e) {
+                System.err.println("Thread execution was abrupted");
+            }
+        }
     }
 }

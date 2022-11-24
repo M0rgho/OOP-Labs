@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SimulationEngine implements IEngine {
-    private final List<Animal> animals = new ArrayList<>();
-    private final MoveDirection[] directions;
-    private final AbstractWorldMap map;
-    private final Vector2d[] positions;
-    private int moveDelay = 0;
+    final List<Animal> animals = new ArrayList<>();
+    final MoveDirection[] directions;
+    final AbstractWorldMap map;
+    final Vector2d[] positions;
 
     public SimulationEngine(MoveDirection[] directions, AbstractWorldMap map, Vector2d[] positions) {
         this.directions = directions;
@@ -28,11 +27,6 @@ public class SimulationEngine implements IEngine {
     public void run() {
         for (int i = 0; i < directions.length; ++i) {
             animals.get(i % animals.size()).move(directions[i]);
-            try {
-                Thread.sleep(moveDelay);
-            } catch (InterruptedException e) {
-                System.err.println("Thread execution was abrupted");
-            }
         }
     }
 

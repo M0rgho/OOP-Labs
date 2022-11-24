@@ -38,6 +38,16 @@ public class Animal implements IMapElement{
         return position;
     }
 
+    @Override
+    public String getGraphicRepresentation() {
+        return switch (direction) {
+            case NORTH -> "src/main/resources/up.png";
+            case SOUTH -> "src/main/resources/down.png";
+            case EAST -> "src/main/resources/right.png";
+            case WEST -> "src/main/resources/left.png";
+        };
+    }
+
     public void move(MoveDirection direction) {
         switch (direction) {
             case RIGHT -> this.direction = MapDirection.next(this.direction);

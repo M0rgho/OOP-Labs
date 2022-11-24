@@ -80,6 +80,7 @@ public class GridGui extends GridPane{
 
     public void refresh() {
         getChildren().clear();
+        setGridLinesVisible(false);
         getColumnConstraints().clear();
         getRowConstraints().clear();
         createAnimalGrid();
