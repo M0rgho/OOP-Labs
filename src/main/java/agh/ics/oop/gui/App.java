@@ -3,21 +3,30 @@ package agh.ics.oop.gui;
 
 import agh.ics.oop.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.HPos;
+import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.paint.Color;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class App extends Application {
+public class App extends Application implements IPositionChangeObserver{
     private GrassField map;
 
-    private final int appWidth = 600;
-    private final int appHeight = 600;
+    private double appWidth = 600;
+    private double appHeight = 600;
+    private final double cellSize = 40;
+
+    private final int moveDelay = 3100; // milliseconds
+
+    private GridGui gridGui;
+    private SimulationEngine engine;
+
 
     @Override
     public void start(Stage primaryStage) {
@@ -28,79 +37,39 @@ public class App extends Application {
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
-        GridPane animalGrid = createAnimalGrid();
+        Button startButton = new Button("START");
+        startButton.setOnAction(event -> {
+            startButton.setDisable(true);
+            startSimulation();
+        });
+        HBox navPanel = new HBox(startButton, new TextField());
+        gridGui = new GridGui(map, cellSize);
+        VBox mainElement = new VBox(navPanel, gridGui);
 
-        Scene scene = new Scene(animalGrid, appWidth, appHeight);
-        primaryStage.setResizable(false);
+        Scene scene = new Scene(mainElement, appWidth, appHeight);
+//        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Animals Simulation");
         primaryStage.show();
+    }
+
+    private void startSimulation() {
+        new Thread(engine::run).start();
     }
 
     private void runSimulation(String[] args) {
         int grassCount = 10;
         MoveDirection[] directions = OptionsParser.parse(args);
         map = new GrassField(grassCount);
-        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(2,3)};
+        Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(2, 3)};
 
-        IEngine engine = new SimulationEngine(directions, map, positions);
-
-        engine.run();
+        engine = new ThreadedSimulationEngine(directions, map, positions, moveDelay);
+        engine.addObserver(this);
     }
 
-    private GridPane createAnimalGrid() {
-        int minX = map.mapBoundary.getLowerLeft().x;
-        int maxX = map.mapBoundary.getUpperRight().x;
-        int minY = map.mapBoundary.getLowerLeft().y;
-        int maxY = map.mapBoundary.getUpperRight().y;
 
-        int width = maxX - minX + 1;
-        int height = maxY - minY + 1;
-
-        double elWidth = (double) appWidth / (width + 1);
-        double elHeight = (double) appHeight /(height + 1);
-
-        GridPane grid = new GridPane();
-        grid.add(getCenteredText("y/x"), 0, 0, 1, 1);
-        grid.getColumnConstraints().add(new ColumnConstraints(elWidth));
-        grid.getRowConstraints().add(new RowConstraints(elHeight));
-
-        // create x-axis column
-        for(int i = 0; i < width; ++i) {
-            grid.getColumnConstraints().add(new ColumnConstraints(elWidth));
-            grid.add(getCenteredText(Integer.toString(i + minX)), i + 1, 0, 1, 1);
-        }
-        // create y-axis row
-        for(int i = 0; i < height; ++i) {
-            grid.getRowConstraints().add(new RowConstraints(elHeight));
-            grid.add(getCenteredText(Integer.toString(maxY - i)), 0, i + 1, 1, 1);
-        }
-
-        for(int i = 0; i < height; ++i) {
-            for(int j = 0; j < width; ++j) {
-                grid.add(getMapObject(new Vector2d(minX + j, maxY - i)), j + 1, i + 1, 1, 1);
-            }
-        }
-        grid.setGridLinesVisible(true);
-
-        return grid;
+    @Override
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        Platform.runLater(() -> gridGui.refresh());
     }
-
-    private Text getMapObject(Vector2d position) {
-        Object element = map.objectAt(position);
-        Text text = getCenteredText(element != null ? element.toString() : " ");
-        if (element instanceof Grass) {
-            text.setFill(Color.GREEN);
-        }
-        return text;
-    }
-
-    private Text getCenteredText(String textInside) {
-        Text text = new Text();
-        GridPane.setHalignment(text, HPos.CENTER);
-        text.setText(textInside);
-        text.setFont(new Font(20));
-        return text;
-    }
-
 }
