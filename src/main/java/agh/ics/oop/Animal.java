@@ -50,8 +50,14 @@ public class Animal implements IMapElement{
 
     public void move(MoveDirection direction) {
         switch (direction) {
-            case RIGHT -> this.direction = MapDirection.next(this.direction);
-            case LEFT -> this.direction = MapDirection.previous(this.direction);
+            case RIGHT -> {
+                this.direction = MapDirection.next(this.direction);
+                changePosition(this.position);
+            }
+            case LEFT -> {
+                this.direction = MapDirection.previous(this.direction);
+                changePosition(this.position);
+            }
             case FORWARD -> {
                 Vector2d newPosition = this.position.add(MapDirection.toUnitVector(this.direction));
                 if (map.canMoveTo(newPosition))

@@ -25,6 +25,16 @@ public class GrassField extends AbstractWorldMap{
         return newPosition;
     }
 
+    @Override
+    public boolean place(Animal animal) {
+        Vector2d animalPosition = animal.getPosition();
+        if (!canMoveTo(animalPosition))
+            throw new IllegalArgumentException("Can't place the animal at" + animalPosition);
+        elementsSet.put(animalPosition, animal);
+        mapBoundary.addElement(animalPosition);
+        return true;
+    }
+
     void generateGrass() {
         for(int i = 0; i < grassCount; ++i) {
             Vector2d newPosition = getRandomEmptyField();
