@@ -3,9 +3,9 @@ package agh.ics.oop;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimulationEngine implements IEngine {
+public class SimulationEngine implements IEngine, Runnable {
     final List<Animal> animals = new ArrayList<>();
-    final MoveDirection[] directions;
+    MoveDirection[] directions;
     final AbstractWorldMap map;
     final Vector2d[] positions;
 
@@ -21,7 +21,9 @@ public class SimulationEngine implements IEngine {
         addObserver(map);
     }
 
-
+    public void setDirections(MoveDirection[] directions) {
+        this.directions = directions;
+    }
 
     @Override
     public void run() {
