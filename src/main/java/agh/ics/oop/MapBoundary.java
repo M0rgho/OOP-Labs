@@ -7,8 +7,18 @@ import java.util.TreeSet;
 public class MapBoundary implements IPositionChangeObserver{
 
     private final AbstractWorldMap thisMap;
-    private final SortedSet<Vector2d> xCoordinates = new TreeSet<>(Comparator.comparingInt(o -> o.x));
-    private final SortedSet<Vector2d> yCoordinates = new TreeSet<>(Comparator.comparingInt(o -> o.y));
+    private final SortedSet<Vector2d> xCoordinates = new TreeSet<>((a, b) -> {
+        if (a.x == b.x) {
+            return a.y - b.y;
+        }
+        return a.x - b.x;
+    });
+    private final SortedSet<Vector2d> yCoordinates = new TreeSet<>((a, b) -> {
+        if (a.y == b.y) {
+            return a.x - b.x;
+        }
+        return a.y - b.y;
+    });
 
     public MapBoundary(AbstractWorldMap thisMap) {
         this.thisMap = thisMap;

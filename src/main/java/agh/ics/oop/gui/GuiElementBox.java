@@ -39,7 +39,7 @@ public class GuiElementBox extends Node {
         imageView.setFitWidth(cellSize/2);
         VBox vBox = new VBox(imageView, getCaption(element));
         vBox.setAlignment(Pos.CENTER);
-        vBox.setStyle(element instanceof Grass ? "-fx-background-color: #0efd0e" : "-fx-background-color: #88dbe0");
+//        vBox.setStyle(element instanceof Grass ? "-fx-background-color: #0efd0e" : "-fx-background-color: #88dbe0");
         return vBox;
     }
 
